@@ -1,14 +1,22 @@
+import { useMemo, useState } from "react";
+
 import CalendarGrid from "./CalenderGrid";
 import CalendarHeader from "./CalenderHeader";
 import useCalendar from "./useCalender";
 import useHabits from "./useHabits";
 import useProgress from "./useProgress";
 import ProgressBar from "./ProgressBar";
+import HabitForm from "./HabitForm";
 
 const Calendar = ({ initialDate }) => {
   const calendar = useCalendar(initialDate);
+
   const { isChecked, toggle } = useHabits(calendar);
 
+  // 👇 edit state (IMPORTANT)
+  const [editingHabit, setEditingHabit] = useState(null);
+
+  // progress system
   const progress = useProgress({
     habitList: calendar.habitList,
     isChecked,
@@ -19,14 +27,18 @@ const Calendar = ({ initialDate }) => {
   const monthly = progress.getMonthlyProgress();
   const daily = progress.getDailyProgress(new Date().getDate());
 
-  const habitListWithStatus = calendar.habitList.map((habit) => ({
-  ...habit,
-  status: calendar.getGoalStatus(habit, isChecked),
-}));
+  // ✅ FIX: stable status calculation
+  const habitListWithStatus = useMemo(() => {
+    return calendar.habitList.map((habit) => ({
+      ...habit,
+      status: calendar.getGoalStatus(habit, isChecked),
+    }));
+  }, [calendar.habitList, isChecked, calendar.getGoalStatus]);
 
   return (
     <div className="p-4 text-white">
-      {/* PROGRESS */}
+
+      {/* PROGRESS BARS */}
       <div className="mb-4">
         <ProgressBar label="Monthly" value={monthly} />
 
@@ -44,24 +56,13 @@ const Calendar = ({ initialDate }) => {
       {/* HEADER */}
       <CalendarHeader {...calendar} />
 
-      {/* GOAL LIST */}
-      {/* {calendar.habitList.map((habit) => {
-        const status = calendar.getGoalStatus(habit, isChecked);
-
-        return (
-          <div key={habit.name}>
-            <h3>{habit.name}</h3>
-            <p>{status.done} / {status.goal}</p>
-            <div>{status.percent}%</div>
-          </div>
-        );
-      })} */}
-
-      {/* {calendar.habitList.map((habit) => {
-        const status = calendar.getGoalStatus(habit, isChecked);
-
-        return { ...habit, status };
-      })} */}
+      {/* HABIT FORM (ADD + EDIT) */}
+      <HabitForm
+        addHabit={calendar.addHabit}
+        updateHabit={calendar.updateHabit}
+        editingHabit={editingHabit}
+        setEditingHabit={setEditingHabit}
+      />
 
       {/* GRID */}
       <CalendarGrid
@@ -69,6 +70,8 @@ const Calendar = ({ initialDate }) => {
         habitList={habitListWithStatus}
         isChecked={isChecked}
         toggleHabit={toggle}
+        deleteHabit={calendar.deleteHabit}
+        setEditingHabit={setEditingHabit}
       />
     </div>
   );

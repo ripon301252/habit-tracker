@@ -4,12 +4,14 @@ const useProgress = ({
   getWeek,
   totalDays,
 }) => {
+  // 🛡️ ensure array
+  const safeList = Array.isArray(habitList) ? habitList : [];
 
   const getDailyProgress = (day) => {
-    let total = habitList.length;
+    let total = safeList.length;
     let done = 0;
 
-    habitList.forEach((habit) => {
+    safeList.forEach((habit) => {
       if (isChecked(habit, day)) done++;
     });
 
@@ -20,7 +22,7 @@ const useProgress = ({
     let total = 0;
     let done = 0;
 
-    habitList.forEach((habit) => {
+    safeList.forEach((habit) => {
       for (let day = 1; day <= totalDays; day++) {
         if (getWeek(day) === week) {
           total++;
@@ -36,7 +38,7 @@ const useProgress = ({
     let total = 0;
     let done = 0;
 
-    habitList.forEach((habit) => {
+    safeList.forEach((habit) => {
       for (let day = 1; day <= totalDays; day++) {
         total++;
         if (isChecked(habit, day)) done++;

@@ -11,6 +11,8 @@ const CalendarGrid = ({
   getWeek,
   getWeekColor,
   isToday,
+  deleteHabit,
+  setEditingHabit,
 }) => {
   return (
     <div className="overflow-x-auto">
@@ -52,9 +54,9 @@ const CalendarGrid = ({
 
         {/* ROWS */}
         {habitList.map((habit) => (
-          <React.Fragment key={habit.name}>
-            {/* NAME + GOAL + PROGRESS */}
-            <div className="bg-gray-800 p-2 sticky left-0 z-10 flex flex-col">
+          <React.Fragment key={habit.id}>
+            {/* LEFT SIDE */}
+            <div className="bg-gray-800 p-2 sticky left-0 z-10 flex flex-col gap-1">
               <span className="font-bold">{habit.name}</span>
 
               <span className="text-xs text-gray-400">Goal: {habit.goal}</span>
@@ -63,9 +65,26 @@ const CalendarGrid = ({
                 {habit.status.done} / {habit.status.goal} (
                 {habit.status.percent}%)
               </span>
+
+              {/* ACTIONS */}
+              <div className="flex gap-1 mt-1">
+                <button
+                  onClick={() => setEditingHabit(habit)}
+                  className="text-xs bg-blue-500 px-2 rounded"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => deleteHabit(habit.id)}
+                  className="text-xs bg-red-500 px-2 rounded"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
 
-            {/* CELLS */}
+            {/* CHECKBOX GRID */}
             {Array.from({ length: totalDays }, (_, i) => {
               const day = i + 1;
               const week = getWeek(day);
@@ -73,12 +92,12 @@ const CalendarGrid = ({
 
               return (
                 <button
-                  key={`${habit.name}-${day}`}
+                  key={`${habit.id}-${day}`}
                   onClick={() => toggleHabit(habit, day)}
                   className={`w-8 h-8 border flex items-center justify-center text-xs
-            ${getWeekColor(week)}
-            ${checked ? "bg-green-500 text-white" : "text-gray-400"}
-          `}
+                    ${getWeekColor(week)}
+                    ${checked ? "bg-green-500 text-white" : "text-gray-400"}
+                  `}
                 >
                   {checked ? "✓" : ""}
                 </button>
