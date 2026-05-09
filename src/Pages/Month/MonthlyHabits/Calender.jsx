@@ -10,13 +10,10 @@ import HabitForm from "./HabitForm";
 
 const Calendar = ({ initialDate }) => {
   const calendar = useCalendar(initialDate);
-
   const { isChecked, toggle } = useHabits(calendar);
 
-  // 👇 edit state (IMPORTANT)
   const [editingHabit, setEditingHabit] = useState(null);
 
-  // progress system
   const progress = useProgress({
     habitList: calendar.habitList,
     isChecked,
@@ -27,52 +24,76 @@ const Calendar = ({ initialDate }) => {
   const monthly = progress.getMonthlyProgress();
   const daily = progress.getDailyProgress(new Date().getDate());
 
-  // ✅ FIX: stable status calculation
+  // ✅ stable status
   const habitListWithStatus = useMemo(() => {
     return calendar.habitList.map((habit) => ({
       ...habit,
       status: calendar.getGoalStatus(habit, isChecked),
     }));
-  }, [calendar.habitList, isChecked, calendar.getGoalStatus]);
+  }, [calendar.habitList, isChecked, calendar.getGoalStatus, calendar]);
 
   return (
-    <div className="p-4 text-white">
+    <div className="min-h-screen bg-gray-950 text-white p-3 md:p-6">
+      <div className="max-w-[1400px] mx-auto space-y-4">
 
-      {/* PROGRESS BARS */}
-      <div className="mb-4">
-        <ProgressBar label="Monthly" value={monthly} />
+        {/* 🔥 TOP DASHBOARD */}
+        <div className="grid md:grid-cols-3 gap-4">
+          
+          {/* Monthly */}
+          <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
+            <h3 className="text-sm text-gray-400 mb-2">Monthly Progress</h3>
+            <ProgressBar label="Overall" value={monthly} />
+          </div>
 
-        {[1, 2, 3, 4, 5].map((week) => (
-          <ProgressBar
-            key={week}
-            label={`Week ${week}`}
-            value={progress.getWeeklyProgress(week)}
+          {/* Weekly */}
+          <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
+            <h3 className="text-sm text-gray-400 mb-2">Weekly Progress</h3>
+            <div className="space-y-1">
+              {[1, 2, 3, 4, 5].map((week) => (
+                <ProgressBar
+                  key={week}
+                  label={`W${week}`}
+                  value={progress.getWeeklyProgress(week)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Daily */}
+          <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
+            <h3 className="text-sm text-gray-400 mb-2">Today</h3>
+            <ProgressBar label="Today" value={daily} />
+          </div>
+        </div>
+
+        {/* 📅 HEADER */}
+        <div className="bg-gray-950 p-3 rounded-xl border border-gray-800 shadow">
+          <CalendarHeader {...calendar} />
+        </div>
+
+        {/* ✏️ FORM */}
+        <div className="bg-gray-950 p-4 rounded-xl border border-gray-800 shadow">
+          <HabitForm
+            addHabit={calendar.addHabit}
+            updateHabit={calendar.updateHabit}
+            editingHabit={editingHabit}
+            setEditingHabit={setEditingHabit}
           />
-        ))}
+        </div>
 
-        <ProgressBar label="Today" value={daily} />
+        {/* 📊 GRID */}
+        <div className="bg-gray-950 p-3 rounded-xl border border-gray-800 shadow overflow-hidden">
+          <CalendarGrid
+            {...calendar}
+            habitList={habitListWithStatus}
+            isChecked={isChecked}
+            toggleHabit={toggle}
+            deleteHabit={calendar.deleteHabit}
+            setEditingHabit={setEditingHabit}
+          />
+        </div>
+
       </div>
-
-      {/* HEADER */}
-      <CalendarHeader {...calendar} />
-
-      {/* HABIT FORM (ADD + EDIT) */}
-      <HabitForm
-        addHabit={calendar.addHabit}
-        updateHabit={calendar.updateHabit}
-        editingHabit={editingHabit}
-        setEditingHabit={setEditingHabit}
-      />
-
-      {/* GRID */}
-      <CalendarGrid
-        {...calendar}
-        habitList={habitListWithStatus}
-        isChecked={isChecked}
-        toggleHabit={toggle}
-        deleteHabit={calendar.deleteHabit}
-        setEditingHabit={setEditingHabit}
-      />
     </div>
   );
 };

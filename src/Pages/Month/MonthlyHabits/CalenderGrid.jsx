@@ -1,4 +1,5 @@
 import React from "react";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 const CalendarGrid = ({
   year,
@@ -15,15 +16,17 @@ const CalendarGrid = ({
   setEditingHabit,
 }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="w-full overflow-x-auto rounded-xl border border-gray-700 bg-gray-950 shadow-lg">
       <div
-        className="grid gap-1"
+        className="grid gap-[2px]"
         style={{
-          gridTemplateColumns: `150px repeat(${totalDays}, 40px)`,
+          gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
         }}
       >
         {/* HEADER */}
-        <div className="font-bold">Habits</div>
+        <div className="font-semibold p-3 bg-gray-800 sticky left-0 z-20">
+          Habits
+        </div>
 
         {Array.from({ length: totalDays }, (_, i) => {
           const day = i + 1;
@@ -33,21 +36,26 @@ const CalendarGrid = ({
           return (
             <div
               key={`h-${day}`}
-              className={`text-center text-xs ${getWeekColor(week)}`}
+              className={`text-center text-xs py-2 transition ${getWeekColor(
+                week,
+              )}`}
             >
-              <div className="text-gray-400">{days[date.getDay()]}</div>
+              <div className="text-gray-500 text-[10px]">
+                {days[date.getDay()]}
+              </div>
 
               <div
-                className={`w-6 h-6 mx-auto rounded-full flex items-center justify-center ${
-                  isToday(day)
-                    ? "bg-orange-500 text-white"
-                    : "bg-gray-800 text-white"
-                }`}
+                className={`w-7 h-7 mx-auto rounded-full flex items-center justify-center text-sm font-medium transition
+                  ${
+                    isToday(day)
+                      ? "bg-orange-500 text-white shadow"
+                      : "bg-gray-700 text-white"
+                  }`}
               >
                 {day}
               </div>
 
-              <div className="text-[10px] text-gray-400">W{week}</div>
+              <div className="text-[9px] text-gray-500 mt-1">W{week}</div>
             </div>
           );
         })}
@@ -55,36 +63,39 @@ const CalendarGrid = ({
         {/* ROWS */}
         {habitList.map((habit) => (
           <React.Fragment key={habit.id}>
-            {/* LEFT SIDE */}
-            <div className="bg-gray-800 p-2 sticky left-0 z-10 flex flex-col gap-1">
-              <span className="font-bold">{habit.name}</span>
+            {/* LEFT PANEL */}
+            <div className="bg-gray-800 p-2 sticky left-0 z-10 border-r border-gray-700 h-full grid grid-cols-[1fr_auto] items-center gap-2">
+              {/* LEFT: Habit Info */}
+              <div>
+                <h3 className="font-semibold text-sm">{habit.name}</h3>
 
-              <span className="text-xs text-gray-400">Goal: {habit.goal}</span>
+                <p className="text-[11px] text-gray-400">Goal: {habit.goal}</p>
 
-              <span className="text-xs text-green-400">
-                {habit.status.done} / {habit.status.goal} (
-                {habit.status.percent}%)
-              </span>
+                <p className="text-[11px] text-green-400">
+                  {habit.status.done} / {habit.status.goal} (
+                  {habit.status.percent}%)
+                </p>
+              </div>
 
-              {/* ACTIONS */}
-              <div className="flex gap-1 mt-1">
+              {/* RIGHT: Actions */}
+              <div className="flex flex-col gap-1">
                 <button
                   onClick={() => setEditingHabit(habit)}
-                  className="text-xs bg-blue-500 px-2 rounded"
+                  className="flex items-center justify-center w-6 h-6 bg-green-500/50 rounded hover:bg-green-600/50 transition cursor-pointer"
                 >
-                  Edit
+                  <FiEdit2 size={13} />
                 </button>
 
                 <button
                   onClick={() => deleteHabit(habit.id)}
-                  className="text-xs bg-red-500 px-2 rounded"
+                  className="flex items-center justify-center w-6 h-6 bg-red-500/50 rounded hover:bg-red-600/50 transition cursor-pointer"
                 >
-                  Delete
+                  <FiTrash2 size={13} />
                 </button>
               </div>
             </div>
 
-            {/* CHECKBOX GRID */}
+            {/* CHECK GRID */}
             {Array.from({ length: totalDays }, (_, i) => {
               const day = i + 1;
               const week = getWeek(day);
@@ -94,9 +105,12 @@ const CalendarGrid = ({
                 <button
                   key={`${habit.id}-${day}`}
                   onClick={() => toggleHabit(habit, day)}
-                  className={`w-8 h-8 border flex items-center justify-center text-xs
-                    ${getWeekColor(week)}
-                    ${checked ? "bg-green-500 text-white" : "text-gray-400"}
+                  className={`w-9 h-9 border rounded-sm ml-[.6px] border-gray-800 cursor-pointer flex items-center justify-center text-xs transition
+                    ${
+                      checked
+                        ? "bg-green-500/70 text-white scale-105"
+                        : `${getWeekColor(week)} hover:brightness-125`
+                    }
                   `}
                 >
                   {checked ? "✓" : ""}

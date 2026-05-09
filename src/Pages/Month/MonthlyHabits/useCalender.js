@@ -82,9 +82,27 @@ const useCalendar = (initialDate) => {
   const getWeek = (day) => Math.ceil(day / 7);
 
   const getWeekColor = (week) => {
-    const colors = ["bg-gray-900", "bg-gray-800", "bg-gray-700"];
+    const colors = [
+      "bg-gray-900",
+      "bg-gray-800",
+      "bg-gray-900",
+      "bg-gray-800",
+      "bg-gray-900",
+    ];
     return colors[(week - 1) % colors.length];
   };
+
+  // const getWeekColor = (week) => {
+  //   const colors = {
+  //     1: "bg-blue-900/40",
+  //     2: "bg-purple-900/40",
+  //     3: "bg-pink-900/40",
+  //     4: "bg-orange-900/40",
+  //     5: "bg-emerald-900/40",
+  //   };
+
+  //   return colors[week] || "bg-gray-900";
+  // };
 
   const isToday = (day) => {
     const today = new Date();

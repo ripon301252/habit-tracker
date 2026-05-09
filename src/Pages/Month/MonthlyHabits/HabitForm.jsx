@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-const HabitForm = ({ addHabit, updateHabit, editingHabit, setEditingHabit }) => {
+const HabitForm = ({
+  addHabit,
+  updateHabit,
+  editingHabit,
+  setEditingHabit,
+}) => {
   const [name, setName] = useState("");
   const [goal, setGoal] = useState("");
 
@@ -34,12 +39,12 @@ const HabitForm = ({ addHabit, updateHabit, editingHabit, setEditingHabit }) => 
   };
 
   return (
-    <div className="flex gap-2 mb-4">
+    <div className="flex flex-col md:flex-row gap-2 mb-4 bg-gray-900 p-3 rounded-lg shadow">
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Habit"
-        className="text-black px-2"
+        placeholder="Habit name"
+        className="flex-1 px-3 py-2 rounded bg-gray-800 text-white outline-none"
       />
 
       <input
@@ -47,10 +52,13 @@ const HabitForm = ({ addHabit, updateHabit, editingHabit, setEditingHabit }) => 
         onChange={(e) => setGoal(e.target.value)}
         placeholder="Goal"
         type="number"
-        className="text-black px-2"
+        className="w-full md:w-24 px-3 py-2 rounded bg-gray-800 text-white outline-none"
       />
 
-      <button onClick={handleSubmit} className="bg-green-500 px-3 rounded">
+      <button
+        onClick={handleSubmit}
+        className="bg-green-500/50 px-4 py-2 rounded hover:bg-green-600/50 transition cursor-pointer"
+      >
         {editMode ? "Update" : "Add"}
       </button>
     </div>

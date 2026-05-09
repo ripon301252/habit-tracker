@@ -16,10 +16,6 @@ export const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      // {
-      //   path: "/",
-      //   element: <Calendar />,
-      // },
       {
         path: "/month/:year/:month",
         element: <MonthPage />,
