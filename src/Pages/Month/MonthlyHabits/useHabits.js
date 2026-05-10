@@ -1,30 +1,31 @@
 import { useEffect, useState } from "react";
 
+const STORAGE_KEY = "habit-state";
+
 const useHabits = (calendar) => {
   const { year, month } = calendar;
 
-  const safeParse = (data) => {
+  // ✅ lazy init + safe parse
+  const [habitsState, setHabitsState] = useState(() => {
     try {
-      return JSON.parse(data);
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
     } catch {
       return {};
     }
-  };
-
-  const [habitsState, setHabitsState] = useState(() => {
-    const saved = localStorage.getItem("habits");
-    return saved ? safeParse(saved) : {};
   });
 
+  // ✅ save safely
   useEffect(() => {
-    localStorage.setItem("habits", JSON.stringify(habitsState));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(habitsState));
+    } catch (e) {
+      console.log("Save error:", e);
+    }
   }, [habitsState]);
 
-  // const getKey = (habit, day) =>
-  //   `${habit.name}-${year}-${month}-${day}`;
-
   const getKey = (habit, day) =>
-  `${habit.id}-${year}-${month}-${day}`;
+    `${habit.id}-${year}-${month}-${day}`;
 
   const toggle = (habit, day) => {
     const key = getKey(habit, day);

@@ -4,8 +4,9 @@ const useProgress = ({
   getWeek,
   totalDays,
 }) => {
-  // 🛡️ ensure array
-  const safeList = Array.isArray(habitList) ? habitList : [];
+  const safeList = Array.isArray(habitList)
+    ? habitList
+    : [];
 
   const getDailyProgress = (day) => {
     let total = safeList.length;

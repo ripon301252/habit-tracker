@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
 
-const useCalendar = (initialDate) => {
-  const [currentDate, setCurrentDate] = useState(initialDate || new Date());
+const STORAGE_KEY = "habit-data";
 
-  const [habitData, setHabitData] = useState({});
+const useCalendar = (initialDate) => {
+  const [currentDate, setCurrentDate] = useState(
+    initialDate || new Date()
+  );
+
+  const [habitData, setHabitData] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
   const key = `${year}-${month}`;
 
-  // ✅ current month habit list
-  const habitList = Array.isArray(habitData?.[key]) ? habitData[key] : [];
+  // current month list
+  const habitList = habitData?.[key] || [];
 
+  // add habit
   const addHabit = (habit) => {
     setHabitData((prev) => ({
       ...prev,
@@ -26,10 +38,10 @@ const useCalendar = (initialDate) => {
     }));
   };
 
+  // delete habit
   const deleteHabit = (id) => {
     setHabitData((prev) => {
       const list = prev[key] || [];
-
       return {
         ...prev,
         [key]: list.filter((h) => h.id !== id),
@@ -37,47 +49,46 @@ const useCalendar = (initialDate) => {
     });
   };
 
+  // update habit
   const updateHabit = (id, newData) => {
     setHabitData((prev) => {
       const list = prev[key] || [];
 
       return {
         ...prev,
-        [key]: list.map((h) => (h.id === id ? { ...h, ...newData } : h)),
+        [key]: list.map((h) =>
+          h.id === id ? { ...h, ...newData } : h
+        ),
       };
     });
   };
 
+  // ✅ persist safely
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("habits");
-
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setHabitData(parsed && typeof parsed === "object" ? parsed : {});
-      }
-    } catch {
-      setHabitData({});
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(habitData)
+      );
+    } catch (e) {
+      console.log("Save error:", e);
     }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("habits", JSON.stringify(habitData));
   }, [habitData]);
 
+  // month navigation sync
   useEffect(() => {
-    if (initialDate) {
-      setCurrentDate(initialDate);
-    }
+    if (initialDate) setCurrentDate(initialDate);
   }, [initialDate]);
 
   const totalDays = new Date(year, month + 1, 0).getDate();
 
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const next = () => setCurrentDate(new Date(year, month + 1, 1));
+  const next = () =>
+    setCurrentDate(new Date(year, month + 1, 1));
 
-  const prev = () => setCurrentDate(new Date(year, month - 1, 1));
+  const prev = () =>
+    setCurrentDate(new Date(year, month - 1, 1));
 
   const getWeek = (day) => Math.ceil(day / 7);
 
@@ -91,18 +102,6 @@ const useCalendar = (initialDate) => {
     ];
     return colors[(week - 1) % colors.length];
   };
-
-  // const getWeekColor = (week) => {
-  //   const colors = {
-  //     1: "bg-blue-900/40",
-  //     2: "bg-purple-900/40",
-  //     3: "bg-pink-900/40",
-  //     4: "bg-orange-900/40",
-  //     5: "bg-emerald-900/40",
-  //   };
-
-  //   return colors[week] || "bg-gray-900";
-  // };
 
   const isToday = (day) => {
     const today = new Date();
