@@ -22,7 +22,14 @@ const Calendar = ({ initialDate }) => {
   });
 
   const monthly = progress.getMonthlyProgress();
-  const daily = progress.getDailyProgress(new Date().getDate());
+  // const daily = progress.getDailyProgress(new Date().getDate());
+  const today = new Date();
+
+  const isCurrentMonth =
+    today.getFullYear() === calendar.year &&
+    today.getMonth() === calendar.month;
+
+  const daily = isCurrentMonth ? progress.getDailyProgress(today.getDate()) : 0;
 
   // ✅ stable status
   const habitListWithStatus = useMemo(() => {
@@ -30,15 +37,13 @@ const Calendar = ({ initialDate }) => {
       ...habit,
       status: calendar.getGoalStatus(habit, isChecked),
     }));
-  }, [calendar.habitList, isChecked, calendar.getGoalStatus, calendar]);
+  }, [calendar.habitList, isChecked]);
 
   return (
     <div className="min-h-screen bg-gray-950 text-white p-3 md:p-6">
       <div className="max-w-[1400px] mx-auto space-y-4">
-
         {/* 🔥 TOP DASHBOARD */}
         <div className="grid md:grid-cols-3 gap-4">
-          
           {/* Monthly */}
           <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
             <h3 className="text-sm text-gray-400 mb-2">Monthly Progress</h3>
@@ -92,7 +97,6 @@ const Calendar = ({ initialDate }) => {
             setEditingHabit={setEditingHabit}
           />
         </div>
-
       </div>
     </div>
   );

@@ -16,16 +16,17 @@ const CalendarGrid = ({
   setEditingHabit,
 }) => {
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-gray-700 bg-gray-950 shadow-lg">
+    <div className="w-full overflow-auto max-h-[70vh] rounded-xl border border-gray-700 bg-gray-950 shadow-lg">
       <div
         className="grid gap-[2px]"
         style={{
-          gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
+          // gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
+          gridTemplateColumns: `140px repeat(${totalDays}, minmax(36px, 1fr))`,
         }}
       >
         {/* HEADER */}
         <div className="font-semibold p-3 bg-gray-800 sticky left-0 z-20">
-          Habits
+          Habits / Days
         </div>
 
         {Array.from({ length: totalDays }, (_, i) => {
@@ -36,7 +37,7 @@ const CalendarGrid = ({
           return (
             <div
               key={`h-${day}`}
-              className={`text-center text-xs py-2 transition ${getWeekColor(
+              className={`text-center text-xs py-2 transition sticky top-0 z-10 rounded-sm  ${getWeekColor(
                 week,
               )}`}
             >
@@ -55,10 +56,16 @@ const CalendarGrid = ({
                 {day}
               </div>
 
-              <div className="text-[9px] text-gray-500 mt-1">W{week}</div>
+              <div className="text-[10px] text-gray-500 mt-1">W{week}</div>
             </div>
           );
         })}
+
+        {habitList.length === 0 && (
+          <div className="col-span-full text-center py-10 text-gray-500">
+            No habits yet. Add one above to start tracking!
+          </div>
+        )}
 
         {/* ROWS */}
         {habitList.map((habit) => (
@@ -87,7 +94,13 @@ const CalendarGrid = ({
                 </button>
 
                 <button
-                  onClick={() => deleteHabit(habit.id)}
+                  onClick={() => {
+                    if (
+                      confirm("Are you sure you want to delete this habit?")
+                    ) {
+                      deleteHabit(habit.id);
+                    }
+                  }}
                   className="flex items-center justify-center w-6 h-6 bg-red-500/50 rounded hover:bg-red-600/50 transition cursor-pointer"
                 >
                   <FiTrash2 size={13} />
@@ -105,15 +118,15 @@ const CalendarGrid = ({
                 <button
                   key={`${habit.id}-${day}`}
                   onClick={() => toggleHabit(habit, day)}
-                  className={`w-9 h-9 border rounded-sm ml-[.6px] border-gray-800 cursor-pointer flex items-center justify-center text-xs transition
+                  className={`w-9 h-9 border rounded-sm border-gray-800 cursor-pointer flex items-center justify-center text-xs transition
                     ${
                       checked
                         ? "bg-green-500/70 text-white scale-105"
-                        : `${getWeekColor(week)} hover:brightness-125`
+                        : `${getWeekColor(week)} hover:scale-105 hover:brightness-125 active:scale-95`
                     }
                   `}
                 >
-                  {checked ? "✓" : ""}
+                  {checked ? "✓" : "✗"}
                 </button>
               );
             })}

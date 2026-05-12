@@ -20,7 +20,11 @@ const HabitForm = ({
   }, [editingHabit]);
 
   const handleSubmit = () => {
-    if (!name) return;
+    // if (!name) return;
+    if (!name || !goal || goal <= 0) {
+      alert("Please enter valid habit and goal");
+      return;
+    }
 
     const habitData = {
       name,
