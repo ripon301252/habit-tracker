@@ -25,7 +25,7 @@ const CalendarGrid = ({
         }}
       >
         {/* HEADER */}
-        <div className="font-semibold p-3 bg-gray-800 sticky left-0 z-20">
+        <div className="font-semibold p-3 bg-gray-800 sticky left-0 top-0 z-20 flex justify-center items-center">
           Habits / Days
         </div>
 
@@ -71,7 +71,7 @@ const CalendarGrid = ({
         {habitList.map((habit) => (
           <React.Fragment key={habit.id}>
             {/* LEFT PANEL */}
-            <div className="bg-gray-800 p-2 sticky left-0 z-10 border-r border-gray-700 h-full grid grid-cols-[1fr_auto] items-center gap-2">
+            <div className="bg-gray-800 p-2 sticky left-0 z-10 rounded-sm border-r border-gray-700 h-full grid grid-cols-[1fr_auto] items-center gap-2">
               {/* LEFT: Habit Info */}
               <div>
                 <h3 className="font-semibold text-sm">{habit.name}</h3>
