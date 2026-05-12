@@ -126,7 +126,9 @@ const CalendarGrid = ({
                     }
                   `}
                 >
-                  {checked ? "✓" : "✗"}
+                  <span className={checked ? "text-white" : "text-red-400/70"}>
+                    {checked ? "✓" : "✗"}
+                  </span>
                 </button>
               );
             })}
