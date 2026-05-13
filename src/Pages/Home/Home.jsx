@@ -1,11 +1,12 @@
 import React from 'react';
 import Banner from './Banner';
-import Calendar from '../Month/MonthlyHabits/Calender';
+import WhyUse from './WhyUse';
 
 const Home = () => {
     return (
         <div>
            <Banner />
+           <WhyUse />
         </div>
     );
 };

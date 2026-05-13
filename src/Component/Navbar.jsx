@@ -1,153 +1,100 @@
 import React from "react";
 import { Link } from "react-router";
-// import imgLogo from "../assets/goal.png";
 import imgLogo1 from "../assets/goalLogo.png";
 
 const Navbar = () => {
   const currentYear = new Date().getFullYear();
-  
-  
+
+  const months = [
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+  ];
+
   return (
-    <div className="sticky top-0 z-20 bg-gradient-to-r from-black/80 via-green-500/50 to-transparent shadow-sm">
-      <div className="navbar md:px-4">
+    <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-green-500/50 backdrop-blur-md shadow-md">
+      <div className="navbar max-w-6xl mx-auto px-4">
+
+        {/* START */}
         <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {" "}
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />{" "}
-              </svg>
-            </div>
-            <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-green-900 rounded-box z-1 mt-3 w-52 p-2 shadow -ml-2"
-            >
-              <li>
-                <Link to="/">Home</Link>
-              </li>
+
+          {/* Mobile Menu */}
+          <div className="dropdown lg:hidden">
+            <button tabIndex={0} className="btn btn-ghost">
+              ☰
+            </button>
+
+            <ul className="menu menu-sm dropdown-content mt-3 w-52 bg-green-900 text-white rounded-box p-3 shadow">
+              <li><Link to="/">Home</Link></li>
+
               <li>
                 <details>
                   <summary>Month</summary>
-                  <ul className="p-2 bg-green-900 w-40 z-1">
-                    <li>
-                      <Link to={`/month/${currentYear}/january`}>January</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/february`}>February</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/march`}>March</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/april`}>April</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/may`}>May</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/june`}>June</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/july`}>July</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/august`}>August</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/september`}>September</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/october`}>October</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/november`}>November</Link>
-                    </li>
-                    <li>
-                      <Link to={`/month/${currentYear}/december`}>December</Link>
-                    </li>
+                  <ul className="pl-2">
+                    {months.map((m) => (
+                      <li key={m}>
+                        <Link to={`/month/${currentYear}/${m}`}>
+                          {m.charAt(0).toUpperCase() + m.slice(1)}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </details>
               </li>
-              <li>
-                <Link to="/blogs">Blogs</Link>
-              </li>
+
+              <li><Link to="/blogs">Blogs</Link></li>
             </ul>
           </div>
-          <div>
-            <Link to="/" className="flex items-center gap-1 font-bold text-xl">
-              <img src={imgLogo1} className="w-12" alt="" />
-              <span className="text-green-500/50">Habit</span>
-              <span className="text-yellow-500/50">Tracker</span>
-            </Link>
-          </div>
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 font-bold text-xl">
+            <img src={imgLogo1} className="w-10" alt="logo" />
+            <span className="text-green-400">Habit</span>
+            <span className="text-yellow-400">Tracker</span>
+          </Link>
         </div>
+
+        {/* CENTER (Desktop) */}
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
+          <ul className="menu menu-horizontal gap-2">
+
+            <li><Link to="/">Home</Link></li>
+
             <li>
               <details>
                 <summary>Month</summary>
-                <ul className="p-2 bg-green-900 w-40 z-1">
-                  <li>
-                    <Link to={`/month/${currentYear}/january`}>January</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/february`}>February</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/march`}>March</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/april`}>April</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/may`}>May</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/june`}>June</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/july`}>July</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/august`}>August</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/september`}>September</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/october`}>October</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/november`}>November</Link>
-                  </li>
-                  <li>
-                    <Link to={`/month/${currentYear}/december`}>December</Link>
-                  </li>
+                <ul className="bg-green-900 text-white p-3 rounded-lg grid grid-cols-2 gap-1 w-60">
+                  {months.map((m) => (
+                    <li key={m}>
+                      <Link to={`/month/${currentYear}/${m}`}>
+                        {m.charAt(0).toUpperCase() + m.slice(1)}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </details>
             </li>
-            <li>
-              <Link to="/blogs">Blogs</Link>
-            </li>
+
+            <li><Link to="/blogs">Blogs</Link></li>
           </ul>
         </div>
+
+        {/* END */}
         <div className="navbar-end">
-          <a className="btn">Button</a>
+          <button className="btn btn-sm btn-success">
+            Start
+          </button>
         </div>
+
       </div>
     </div>
   );
