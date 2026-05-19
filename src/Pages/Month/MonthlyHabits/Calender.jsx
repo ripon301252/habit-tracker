@@ -53,7 +53,7 @@ const Calendar = ({ initialDate }) => {
           {/* Weekly */}
           <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
             <h3 className="text-sm text-gray-400 mb-2">Weekly Progress</h3>
-            <div className="space-y-1">
+            <div className="space-y-3">
               {[1, 2, 3, 4, 5].map((week) => (
                 <ProgressBar
                   key={week}

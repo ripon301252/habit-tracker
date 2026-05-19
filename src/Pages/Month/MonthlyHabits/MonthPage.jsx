@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
 import Calendar from "./Calender";
 
-
 const MonthPage = () => {
   const { year, month } = useParams();
   console.log("MonthPage rendered", year, month);
@@ -22,11 +21,21 @@ const MonthPage = () => {
   };
 
   const monthIndex = monthMap?.[month?.toLowerCase()];
-  
 
-  if (!year || monthIndex === undefined) {
-    return <div>Invalid Month or Year</div>;
+  const parsedYear = Number(year);
+
+  if (!parsedYear || monthIndex === undefined) {
+    // return <div>Invalid Month or Year</div>;
+    return (
+      <div className="text-center text-red-400 mt-10">
+        Invalid Month or Year
+      </div>
+    );
   }
+
+  // if (!year || monthIndex === undefined) {
+  //   return <div>Invalid Month or Year</div>;
+  // }
 
   const date = new Date(year, monthIndex, 1);
 

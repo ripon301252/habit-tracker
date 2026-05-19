@@ -19,7 +19,8 @@ const useCalendar = (initialDate) => {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  const key = `${year}-${month}`;
+  // const key = `${year}-${month}`;
+  const key = `${year}-${String(month + 1).padStart(2, "0")}`;
 
   // current month list
   const habitList = habitData?.[key] || [];
@@ -92,16 +93,19 @@ const useCalendar = (initialDate) => {
 
   const getWeek = (day) => Math.ceil(day / 7);
 
-  const getWeekColor = (week) => {
-    const colors = [
-      "bg-gray-900",
-      "bg-gray-800",
-      "bg-gray-900",
-      "bg-gray-800",
-      "bg-gray-900",
-    ];
-    return colors[(week - 1) % colors.length];
-  };
+  // const getWeekColor = (week) => {
+  //   const colors = [
+  //     "bg-gray-900",
+  //     "bg-gray-800",
+  //     "bg-gray-900",
+  //     "bg-gray-800",
+  //     "bg-gray-900",
+  //   ];
+  //   return colors[(week - 1) % colors.length];
+  // };
+
+  const getWeekColor = (week) =>
+  week % 2 === 0 ? "bg-gray-800" : "bg-gray-900";
 
   const isToday = (day) => {
     const today = new Date();

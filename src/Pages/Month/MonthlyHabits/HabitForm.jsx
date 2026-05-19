@@ -8,6 +8,7 @@ const HabitForm = ({
 }) => {
   const [name, setName] = useState("");
   const [goal, setGoal] = useState("");
+  const [error, setError] = useState("");
 
   const editMode = Boolean(editingHabit);
 
@@ -19,16 +20,19 @@ const HabitForm = ({
     }
   }, [editingHabit]);
 
-  const handleSubmit = () => {
-    // if (!name) return;
-    if (!name || !goal || goal <= 0) {
-      alert("Please enter valid habit and goal");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const parsedGoal = Number(goal);
+
+    if (!name.trim() || !parsedGoal || parsedGoal <= 0) {
+      setError("Enter valid habit & goal");
       return;
     }
 
     const habitData = {
-      name,
-      goal: Number(goal),
+      name: name.trim(),
+      goal: parsedGoal,
     };
 
     if (editMode) {
@@ -40,7 +44,10 @@ const HabitForm = ({
 
     setName("");
     setGoal("");
+    setError("");
   };
+
+
 
   return (
     <div className="flex flex-col md:flex-row gap-2 mb-4 bg-gray-900 p-3 rounded-lg shadow">
@@ -58,6 +65,8 @@ const HabitForm = ({
         type="number"
         className="w-full md:w-24 px-3 py-2 rounded bg-gray-800 text-white outline-none"
       />
+
+      {error && <p className="text-red-400 text-sm">{error}</p>}
 
       <button
         onClick={handleSubmit}

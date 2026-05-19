@@ -1,5 +1,6 @@
 import React from "react";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import ProgressBar from "./ProgressBar";
 
 const CalendarGrid = ({
   year,
@@ -18,14 +19,14 @@ const CalendarGrid = ({
   return (
     <div className="w-full overflow-auto max-h-[70vh] rounded-xl border border-gray-700 bg-gray-950 shadow-lg">
       <div
-        className="grid gap-[2px]"
+        className="grid gap-[3px]"
         style={{
           // gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
           gridTemplateColumns: `140px repeat(${totalDays}, minmax(36px, 1fr))`,
         }}
       >
         {/* HEADER */}
-        <div className="font-semibold p-3 bg-gray-800 sticky left-0 top-0 z-20 flex justify-center items-center">
+        <div className="font-semibold p-3 bg-gray-900 sticky left-0 top-0 z-20 flex justify-center items-center">
           Habits / Days
         </div>
 
@@ -71,24 +72,26 @@ const CalendarGrid = ({
         {habitList.map((habit) => (
           <React.Fragment key={habit.id}>
             {/* LEFT PANEL */}
-            <div className="bg-gray-800 p-2 sticky left-0 z-10 rounded-sm border-r border-gray-700 h-full grid grid-cols-[1fr_auto] items-center gap-2">
-              {/* LEFT: Habit Info */}
-              <div>
-                <h3 className="font-semibold text-sm">{habit.name}</h3>
+            <div className="bg-gray-900 p-[6px] rounded-sm sticky left-0 z-10 flex items-center justify-between gap-[6px]">
+              {/* LEFT INFO */}
+              <div className="flex-1">
+                <h3 className="font-semibold text-xs leading-tight">
+                  {habit.name}
+                </h3>
 
-                <p className="text-[11px] text-gray-400">Goal: {habit.goal}</p>
+                <p className="text-xs text-gray-400 mt-[3px]">Goal: {habit.goal}</p>
 
-                <p className="text-[11px] text-green-400">
-                  {habit.status.done} / {habit.status.goal} (
-                  {habit.status.percent}%)
-                </p>
+                <ProgressBar
+                  label={`${habit.status.done}/${habit.status.goal}`}
+                  value={habit.status.percent}
+                />
               </div>
 
-              {/* RIGHT: Actions */}
+              {/* ACTIONS */}
               <div className="flex flex-col gap-1">
                 <button
                   onClick={() => setEditingHabit(habit)}
-                  className="flex items-center justify-center w-6 h-6 bg-green-500/50 rounded hover:bg-green-600/50 transition cursor-pointer"
+                  className="w-7 h-7 flex items-center justify-center bg-green-500/40 rounded hover:bg-green-500/60 cursor-pointer"
                 >
                   <FiEdit2 size={13} />
                 </button>
@@ -101,7 +104,7 @@ const CalendarGrid = ({
                       deleteHabit(habit.id);
                     }
                   }}
-                  className="flex items-center justify-center w-6 h-6 bg-red-500/50 rounded hover:bg-red-600/50 transition cursor-pointer"
+                  className="w-7 h-7 flex items-center justify-center bg-red-500/40 rounded hover:bg-red-500/60 cursor-pointer"
                 >
                   <FiTrash2 size={13} />
                 </button>
@@ -113,19 +116,26 @@ const CalendarGrid = ({
               const day = i + 1;
               const week = getWeek(day);
               const checked = isChecked(habit, day);
+              const isGoalReached = habit.status.done >= habit.status.goal;
 
               return (
                 <button
                   key={`${habit.id}-${day}`}
-                  onClick={() => toggleHabit(habit, day)}
-                  className={`w-9 h-9 border rounded-sm border-gray-800 cursor-pointer flex items-center justify-center text-xs transition
-                    ${
-                      checked
-                        ? "bg-green-500/70 text-white scale-105"
-                        : `${getWeekColor(week)} hover:scale-105 hover:brightness-125 active:scale-95`
+                  onClick={() => {
+                    if (!isGoalReached) {
+                      toggleHabit(habit, day);
                     }
-                  `}
-                >
+                  }}
+                  disabled={isGoalReached}
+                  className={`w-9 h-9 border rounded-sm border-gray-800 flex items-center justify-center text-xs transition
+                       ${
+                         checked
+                           ? "bg-green-500/70 text-white scale-105"
+                           : `${getWeekColor(week)} hover:scale-105 hover:brightness-125 active:scale-95`
+                       }
+                       ${isGoalReached ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
+                     `}
+                    >
                   <span className={checked ? "text-white" : "text-red-400/70"}>
                     {checked ? "✓" : "✗"}
                   </span>

@@ -5,6 +5,10 @@ import imgLogo1 from "../assets/goalLogo.png";
 const Navbar = () => {
   const currentYear = new Date().getFullYear();
 
+  const currentMonth = new Date()
+    .toLocaleString("default", { month: "long" })
+    .toLowerCase();
+
   const months = [
     "january",
     "february",
@@ -23,10 +27,8 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-green-500/50 backdrop-blur-md shadow-md">
       <div className="navbar max-w-6xl mx-auto px-4">
-
         {/* START */}
         <div className="navbar-start">
-
           {/* Mobile Menu */}
           <div className="dropdown lg:hidden">
             <button tabIndex={0} className="btn btn-ghost">
@@ -34,7 +36,9 @@ const Navbar = () => {
             </button>
 
             <ul className="menu menu-sm dropdown-content mt-3 w-52 bg-green-900 text-white rounded-box p-3 shadow">
-              <li><Link to="/">Home</Link></li>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
 
               <li>
                 <details>
@@ -51,7 +55,9 @@ const Navbar = () => {
                 </details>
               </li>
 
-              <li><Link to="/blogs">Blogs</Link></li>
+              <li>
+                <Link to="/blogs">Blogs</Link>
+              </li>
             </ul>
           </div>
 
@@ -66,8 +72,9 @@ const Navbar = () => {
         {/* CENTER (Desktop) */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal gap-2">
-
-            <li><Link to="/">Home</Link></li>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
 
             <li>
               <details>
@@ -84,17 +91,18 @@ const Navbar = () => {
               </details>
             </li>
 
-            <li><Link to="/blogs">Blogs</Link></li>
+            <li>
+              <Link to="/blogs">Blogs</Link>
+            </li>
           </ul>
         </div>
 
         {/* END */}
         <div className="navbar-end">
-          <button className="btn btn-sm btn-success">
+          <Link to={`/month/${currentYear}/${currentMonth}`} className="btn btn-sm btn-success">
             Start
-          </button>
+          </Link>
         </div>
-
       </div>
     </div>
   );
