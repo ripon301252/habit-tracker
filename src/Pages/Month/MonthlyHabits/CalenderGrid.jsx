@@ -19,7 +19,7 @@ const CalendarGrid = ({
   return (
     <div className="w-full overflow-auto max-h-[70vh] rounded-xl border border-gray-700 bg-gray-950 shadow-lg">
       <div
-        className="grid gap-[3px]"
+        className="grid gap-[3px] min-w-max"
         style={{
           // gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
           gridTemplateColumns: `140px repeat(${totalDays}, minmax(36px, 1fr))`,
@@ -50,7 +50,7 @@ const CalendarGrid = ({
                 className={`w-7 h-7 mx-auto rounded-full flex items-center justify-center text-sm font-medium transition
                   ${
                     isToday(day)
-                      ? "bg-orange-500 text-white shadow"
+                      ? "bg-orange-500/70 text-white shadow"
                       : "bg-gray-700 text-white"
                   }`}
               >
@@ -69,17 +69,25 @@ const CalendarGrid = ({
         )}
 
         {/* ROWS */}
-        {habitList.map((habit) => (
+        {habitList.map((habit, index) => (
           <React.Fragment key={habit.id}>
             {/* LEFT PANEL */}
             <div className="bg-gray-900 p-[6px] rounded-sm sticky left-0 z-10 flex items-center justify-between gap-[6px]">
               {/* LEFT INFO */}
               <div className="flex-1">
-                <h3 className="font-semibold text-xs leading-tight">
-                  {habit.name}
-                </h3>
+                <div className="flex items-center gap-1">
+                  <div className="w-[16.7px] h-[16.7px] flex items-center justify-center rounded-full bg-gray-700 text-[10px] text-white">
+                    {index + 1}
+                  </div>
 
-                <p className="text-xs text-gray-400 font-semibold">Goal: {habit.goal}</p>
+                  <h3 className="font-semibold text-xs leading-tight">
+                    {habit.name}
+                  </h3>
+                </div>
+
+                <p className="text-xs text-gray-400 font-semibold">
+                  Goal: {habit.goal}
+                </p>
 
                 <ProgressBar
                   label={`${habit.status.done}/${habit.status.goal}`}
@@ -135,7 +143,7 @@ const CalendarGrid = ({
                        }
                        ${isGoalReached ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
                      `}
-                    >
+                >
                   <span className={checked ? "text-white" : "text-red-400/70"}>
                     {checked ? "✓" : "✗"}
                   </span>
