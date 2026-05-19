@@ -79,7 +79,7 @@ const CalendarGrid = ({
                   {habit.name}
                 </h3>
 
-                <p className="text-xs text-gray-400 mt-[3px]">Goal: {habit.goal}</p>
+                <p className="text-xs text-gray-400 font-semibold">Goal: {habit.goal}</p>
 
                 <ProgressBar
                   label={`${habit.status.done}/${habit.status.goal}`}
