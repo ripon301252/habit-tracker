@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-50 bg-gradient-to-r from-black/80 via-green-500/50 backdrop-blur-md shadow-md">
-      <div className="navbar max-w-6xl mx-auto px-4">
+      <div className="navbar max-w-7xl mx-auto">
         {/* START */}
         <div className="navbar-start">
           {/* Mobile Menu */}
