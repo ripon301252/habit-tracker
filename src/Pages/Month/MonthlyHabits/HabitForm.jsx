@@ -50,7 +50,7 @@ const HabitForm = ({
 
 
   return (
-    <div className="flex flex-col md:flex-row gap-2 mb-4 bg-gray-900 p-3 rounded-lg shadow">
+    <div className="flex flex-col md:flex-row gap-2 bg-gray-900 p-3 rounded-lg shadow">
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}

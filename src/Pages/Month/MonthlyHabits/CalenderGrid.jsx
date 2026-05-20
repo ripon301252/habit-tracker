@@ -22,11 +22,11 @@ const CalendarGrid = ({
         className="grid gap-[3px] min-w-max"
         style={{
           // gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
-          gridTemplateColumns: `140px repeat(${totalDays}, minmax(36px, 1fr))`,
+          gridTemplateColumns: `155px repeat(${totalDays}, minmax(36px, 1fr))`,
         }}
       >
         {/* HEADER */}
-        <div className="font-semibold p-3 bg-gray-900 sticky left-0 top-0 z-20 flex justify-center items-center">
+        <div className="font-semibold w-[154.9px] p-3 bg-gray-900 sticky left-0 top-0 z-20 flex justify-center items-center rounded-sm">
           Habits / Days
         </div>
 
@@ -72,7 +72,7 @@ const CalendarGrid = ({
         {habitList.map((habit, index) => (
           <React.Fragment key={habit.id}>
             {/* LEFT PANEL */}
-            <div className="bg-gray-900 p-[6px] rounded-sm sticky left-0 z-10 flex items-center justify-between gap-[6px]">
+            <div className="bg-gray-900 p-[6px] w-[154.9px] rounded-sm sticky left-0 z-10 flex items-center justify-between gap-[6px]">
               {/* LEFT INFO */}
               <div className="flex-1">
                 <div className="flex items-center gap-1">

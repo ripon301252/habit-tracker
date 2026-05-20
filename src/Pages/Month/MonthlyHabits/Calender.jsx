@@ -66,7 +66,7 @@ const Calendar = ({ initialDate }) => {
 
           {/* Daily */}
           <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
-            <h3 className="text-sm text-gray-400 mb-2">Today</h3>
+            <h3 className="text-sm text-gray-400 mb-2">Today Progress</h3>
             <ProgressBar label="Today" value={daily} />
           </div>
         </div>
