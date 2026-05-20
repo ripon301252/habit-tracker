@@ -21,7 +21,6 @@ const CalendarGrid = ({
       <div
         className="grid gap-[3px] min-w-max"
         style={{
-          // gridTemplateColumns: `180px repeat(${totalDays}, 42px)`,
           gridTemplateColumns: `155px repeat(${totalDays}, minmax(36px, 1fr))`,
         }}
       >
@@ -98,7 +97,13 @@ const CalendarGrid = ({
               {/* ACTIONS */}
               <div className="flex flex-col gap-1">
                 <button
-                  onClick={() => setEditingHabit(habit)}
+                  onClick={() => {
+                    setEditingHabit(habit);
+                    window.scrollTo({
+                      top: 350, 
+                      behavior: "smooth",
+                    });
+                  }}
                   className="w-7 h-7 flex items-center justify-center bg-green-500/40 rounded hover:bg-green-500/60 cursor-pointer"
                 >
                   <FiEdit2 size={13} />

@@ -12,14 +12,19 @@ const HabitForm = ({
 
   const editMode = Boolean(editingHabit);
 
-  // যখন edit click হবে → form auto fill
+  // 🔄 Auto fill + reset
   useEffect(() => {
     if (editingHabit) {
       setName(editingHabit.name);
       setGoal(editingHabit.goal);
+    } else {
+      setName("");
+      setGoal("");
+      setError("");
     }
   }, [editingHabit]);
 
+  // ✅ Submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -42,15 +47,20 @@ const HabitForm = ({
       addHabit(habitData);
     }
 
+    // 🔄 reset form
     setName("");
     setGoal("");
     setError("");
   };
 
-
-
   return (
-    <div className="flex flex-col md:flex-row gap-2 bg-gray-900 p-3 rounded-lg shadow">
+    <form
+      onSubmit={handleSubmit}
+      className={`flex flex-col md:flex-row gap-2 bg-gray-900 p-3 rounded-lg shadow relative ${
+        editMode ? "" : ""
+      }`}
+    >
+      {/* 📝 Habit Name */}
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -58,6 +68,7 @@ const HabitForm = ({
         className="flex-1 px-3 py-2 rounded bg-gray-800 text-white outline-none"
       />
 
+      {/* 🎯 Goal */}
       <input
         value={goal}
         onChange={(e) => setGoal(e.target.value)}
@@ -66,15 +77,32 @@ const HabitForm = ({
         className="w-full md:w-24 px-3 py-2 rounded bg-gray-800 text-white outline-none"
       />
 
-      {error && <p className="text-red-400 text-sm">{error}</p>}
-
+      {/* ✅ Submit Button */}
       <button
-        onClick={handleSubmit}
+        type="submit"
         className="bg-green-500/50 px-4 py-2 rounded hover:bg-green-600/50 transition cursor-pointer"
       >
         {editMode ? "Update" : "Add"}
       </button>
-    </div>
+
+      {/* ❌ Cancel Button (only edit mode) */}
+      {editMode && (
+        <button
+          type="button"
+          onClick={() => setEditingHabit(null)}
+          className="bg-red-600/50 px-4 py-2 rounded text-white hover:bg-red-700/50 transition cursor-pointer"
+        >
+          Cancel
+        </button>
+      )}
+
+      {/* ⚠️ Error Message */}
+      {error && (
+        <p className="text-red-400 text-sm absolute -bottom-5 left-0">
+          {error}
+        </p>
+      )}
+    </form>
   );
 };
 
