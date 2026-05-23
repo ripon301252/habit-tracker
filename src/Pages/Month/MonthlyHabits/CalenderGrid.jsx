@@ -143,7 +143,7 @@ const CalendarGrid = ({
                   className={`w-9 h-9 border rounded-sm border-gray-800 flex items-center justify-center text-xs transition
                        ${
                          checked
-                           ? "bg-green-500/70 text-white scale-105"
+                           ? "bg-green-500/70 text-white"
                            : `${getWeekColor(week)} hover:scale-105 hover:brightness-125 active:scale-95`
                        }
                        ${isGoalReached ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
