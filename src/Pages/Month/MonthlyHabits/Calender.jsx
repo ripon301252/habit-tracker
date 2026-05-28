@@ -21,7 +21,8 @@ const Calendar = ({ initialDate }) => {
     totalDays: calendar.totalDays,
   });
 
-  const monthly = progress.getMonthlyProgress();
+  // const monthly = progress.getMonthlyProgress();
+  const monthly = progress.getMonthlyGoalProgress();
   // const daily = progress.getDailyProgress(new Date().getDate());
   const today = new Date();
 
@@ -29,7 +30,8 @@ const Calendar = ({ initialDate }) => {
     today.getFullYear() === calendar.year &&
     today.getMonth() === calendar.month;
 
-  const daily = isCurrentMonth ? progress.getDailyProgress(today.getDate()) : 0;
+  // const daily = isCurrentMonth ? progress.getDailyProgress(today.getDate()) : 0;
+  const daily = isCurrentMonth ? progress.getTodayGoalProgress(today.getDate()) : 0;
 
   // ✅ stable status
   const habitListWithStatus = useMemo(() => {
@@ -46,19 +48,20 @@ const Calendar = ({ initialDate }) => {
         <div className="grid md:grid-cols-3 gap-4">
           {/* Monthly */}
           <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
-            <h3 className="text-sm text-gray-400 mb-2">Monthly Progress</h3>
+            <h3 className="text-sm text-gray-400 mb-2">Monthly Goal Progress</h3>
             <ProgressBar label="Overall" value={monthly} />
           </div>
 
           {/* Weekly */}
           <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
-            <h3 className="text-sm text-gray-400 mb-2">Weekly Progress</h3>
+            <h3 className="text-sm text-gray-400 mb-2">Weekly Goal Progress</h3>
             <div className="space-y-3">
               {[1, 2, 3, 4, 5].map((week) => (
                 <ProgressBar
                   key={week}
                   label={`W${week}`}
-                  value={progress.getWeeklyProgress(week)}
+                  // value={progress.getWeeklyProgress(week)}
+                  value={progress.getWeeklyGoalProgress(week)}
                 />
               ))}
             </div>
@@ -66,7 +69,7 @@ const Calendar = ({ initialDate }) => {
 
           {/* Daily */}
           <div className="bg-gray-950 p-4 rounded-xl shadow border border-gray-800">
-            <h3 className="text-sm text-gray-400 mb-2">Today Progress</h3>
+            <h3 className="text-sm text-gray-400 mb-2">Today Goal Progress</h3>
             <ProgressBar label="Today" value={daily} />
           </div>
         </div>

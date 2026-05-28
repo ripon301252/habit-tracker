@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 const STORAGE_KEY = "habit-data";
 
 const useCalendar = (initialDate) => {
-  const [currentDate, setCurrentDate] = useState(
-    initialDate || new Date()
-  );
+  const [currentDate, setCurrentDate] = useState(initialDate || new Date());
 
   const [habitData, setHabitData] = useState(() => {
     try {
@@ -26,6 +24,19 @@ const useCalendar = (initialDate) => {
   const habitList = habitData?.[key] || [];
 
   // add habit
+  // const addHabit = (habit) => {
+  //   setHabitData((prev) => ({
+  //     ...prev,
+  //     [key]: [
+  //       ...(prev[key] || []),
+  //       {
+  //         id: Date.now(),
+  //         ...habit,
+  //       },
+  //     ],
+  //   }));
+  // };
+
   const addHabit = (habit) => {
     setHabitData((prev) => ({
       ...prev,
@@ -33,7 +44,9 @@ const useCalendar = (initialDate) => {
         ...(prev[key] || []),
         {
           id: Date.now(),
-          ...habit,
+          name: habit.name,
+          goal: habit.goal,
+          completed: [], // 🔥 must for progress tracking
         },
       ],
     }));
@@ -57,9 +70,7 @@ const useCalendar = (initialDate) => {
 
       return {
         ...prev,
-        [key]: list.map((h) =>
-          h.id === id ? { ...h, ...newData } : h
-        ),
+        [key]: list.map((h) => (h.id === id ? { ...h, ...newData } : h)),
       };
     });
   };
@@ -67,10 +78,7 @@ const useCalendar = (initialDate) => {
   // ✅ persist safely
   useEffect(() => {
     try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(habitData)
-      );
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(habitData));
     } catch (e) {
       console.log("Save error:", e);
     }
@@ -85,11 +93,9 @@ const useCalendar = (initialDate) => {
 
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const next = () =>
-    setCurrentDate(new Date(year, month + 1, 1));
+  const next = () => setCurrentDate(new Date(year, month + 1, 1));
 
-  const prev = () =>
-    setCurrentDate(new Date(year, month - 1, 1));
+  const prev = () => setCurrentDate(new Date(year, month - 1, 1));
 
   const getWeek = (day) => Math.ceil(day / 7);
 
@@ -105,7 +111,7 @@ const useCalendar = (initialDate) => {
   // };
 
   const getWeekColor = (week) =>
-  week % 2 === 0 ? "bg-gray-800" : "bg-gray-900";
+    week % 2 === 0 ? "bg-gray-800" : "bg-gray-900";
 
   const isToday = (day) => {
     const today = new Date();
