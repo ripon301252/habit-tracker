@@ -5,7 +5,7 @@ A simple and modern Habit Tracker web application where users can create habits,
 ---
 
 ## 🚀 Live URL
-🔗 (https://habit-tracker-ce8037.netlify.app/)
+- [visit site](https://habit-tracker-ce8037.netlify.app/)
 
 ---
 
