@@ -37,8 +37,8 @@ Follow these steps to run the project locally:
 
 ```bash
 # Clone the repository
-git clone https://github.com/ripon301252/habit-tracker-client.git
-
+git clone:  https://github.com/ripon301252/habit-tracker-client.git
+           
 # Go to project folder
 cd habit-tracker-client
 
